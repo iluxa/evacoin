@@ -4,8 +4,8 @@ import 'zeppelin-solidity/contracts/token/MintableToken.sol';
 import 'zeppelin-solidity/contracts/payment/PullPayment.sol';
 
 contract EvaCoin is MintableToken, PullPayment {
-    string public constant name = 'EvaCoin';
-    string public constant symbol = 'EVA';
+    string public constant name = "EvaCoin";
+    string public constant symbol = "EVA";
     uint8 public constant decimals = 18;
     bool public transferAllowed = false;
 
@@ -25,7 +25,7 @@ contract EvaCoin is MintableToken, PullPayment {
     uint256 public totalSupplySale2 = 0;
 
     enum SaleStages { PreSale, Sale1, Sale2, SaleOff }
-    SaleStages stage = SaleStages.PreSale;
+    SaleStages public stage = SaleStages.PreSale;
 
     function EvaCoin() public {
         keeper = msg.sender; 
@@ -36,15 +36,15 @@ contract EvaCoin is MintableToken, PullPayment {
         _;
     }
 
-    function sale1Started() public {
+    function sale1Started() onlyOwner public {
         totalSupplyPreSale = totalSupply;
         stage = SaleStages.Sale1;
     }
-    function sale2Started() public {
+    function sale2Started() onlyOwner public {
         totalSupplySale1 = totalSupply;
         stage = SaleStages.Sale2;
     }
-    function sale2Stopped() public {
+    function sale2Stopped() onlyOwner public {
         totalSupplySale2 = totalSupply;
         stage = SaleStages.SaleOff;
     }

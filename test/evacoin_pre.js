@@ -90,149 +90,6 @@ contract('evc_pre_dividends', function(accounts) {
     });
 });
 
-// Send bounty tokens, bounty limit
-// test with: testrpc -l 4500000000000
-contract('evc_pre_bounty', function(accounts) {
-  var a1 = accounts[0];
-  var a2 = accounts[1];
-  var a3 = accounts[2];
-  var a4 = accounts[3];
-  var a5 = accounts[4];
-  it("should assert true", function() {
-    var m;
-    var coin;
-    var rate;
-
-    return evc_pre.deployed().then(function(instance) {
-        console.log("deployed");
-        m = instance;
-        return m.coin.call();
-    }).then(function (result) {
-        coin = eva_coin.at(result);
-        return m.bountyCoinsMax.call();
-    }).then(function (result) {
-        var bountyMax = wei2ether(result);
-        //console.log("bounty: ", bountyMax);
-        assert.equal(bountyMax, 75000, "Bounty max must be 75000");
-        return m.sendBounty.sendTransaction(a2, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a2);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a2 balance must be 20000");
-        return m.sendBounty.sendTransaction(a3, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a3);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a3 balance must be 20000");
-        return m.sendBounty.sendTransaction(a4, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a4);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a4 balance must be 20000");
-        return m.sendBounty.sendTransaction(a5, 20000);
-    }).then(function (result) { 
-        assert(false);
-        }).catch(function(error) {
-            assert.equal(error.message, "VM Exception while processing transaction: revert", "Exception must be generated");
-    }).then(function (result) {
-        return coin.balanceOf.call(a5);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 0, "a5 balance must be 0");
-        return m.bountyCoins.call();
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("bountyCoins: ", balance);
-        assert.equal(balance, 60000, "bountyCoins must be 60000");
-        return coin.totalSupply.call();
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("totalSupply: ", balance);
-        assert.equal(balance, 60000, "totalSupply must be 60000");
-
-    });
-});
-});
-
-// Send sponsors tokens, sponsors limit
-// test with: testrpc -l 4500000000000
-contract('evc_pre_sponsors', function(accounts) {
-  var a1 = accounts[0];
-  var a2 = accounts[1];
-  var a3 = accounts[2];
-  var a4 = accounts[3];
-  var a5 = accounts[4];
-  it("should assert true", function() {
-    var m;
-    var coin;
-    var rate;
-
-    return evc_pre.deployed().then(function(instance) {
-        console.log("deployed");
-        m = instance;
-        return m.coin.call();
-    }).then(function (result) {
-        coin = eva_coin.at(result);
-        return m.sponsorsCoinsMax.call();
-    }).then(function (result) {
-        var sponsorsMax = wei2ether(result);
-        //console.log("sponsors: ", sponsorsMax);
-        assert.equal(sponsorsMax, 75000, "Sponsors max must be 75000");
-        return m.sendSponsors.sendTransaction(a2, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a2);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a2 balance must be 20000");
-        return m.sendSponsors.sendTransaction(a3, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a3);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a3 balance must be 20000");
-        return m.sendSponsors.sendTransaction(a4, 20000);
-    }).then(function (result) {
-        return coin.balanceOf.call(a4);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 20000, "a4 balance must be 20000");
-        return m.sendSponsors.sendTransaction(a5, 20000);
-    }).then(function (result) { 
-        assert(false);
-        }).catch(function(error) {
-            assert.equal(error.message, "VM Exception while processing transaction: revert", "Exception must be generated");
-    }).then(function (result) {
-        return coin.balanceOf.call(a5);
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("balance: ", balance);
-        assert.equal(balance, 0, "a5 balance must be 0");
-        return m.sponsorsCoins.call();
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("sponsorsCoins: ", balance);
-        assert.equal(balance, 60000, "sponsorsCoins must be 60000");
-        return coin.totalSupply.call();
-    }).then(function (result) {
-        var balance = wei2ether(result);
-        //console.log("totalSupply: ", balance);
-        assert.equal(balance, 60000, "totalSupply must be 60000");
-
-
-    });
-});
-});
-
 // Check PreSale hardcap, Presale finalization
 // test with: testrpc -l 4500000000000
 contract('evc_pre_limits', function(accounts) {
@@ -296,6 +153,11 @@ contract('evc_pre_limits', function(accounts) {
         }).catch(function(error) {
             assert.equal(error.message, "VM Exception while processing transaction: revert", "Exception must be generated");
 
+    }).then(function (result) { 
+        return coin.owner.call();
+    }).then(function (result) { 
+        console.log(result, " == ", a1);
+        assert.equal(result, a1, "Coin owner must be a1");
     });
 
     });

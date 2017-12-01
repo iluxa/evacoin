@@ -5,11 +5,17 @@ Installation:
 ```
 npm install -g ethereumjs-testrpc
 npm install -g truffle
-npm install zeppelin-solidity
+npm install
 ```
 
 Running PreSale test:
 ```
-testrpc -l 4500000000000
+testrpc
 truffle test ./test/evacoin_pre.js
+```
+
+Running ICO test:
+```
+testrpc
+truffle test ./test/evacoin_ico.js
 ```
